@@ -1,10 +1,11 @@
 #include <bits/stdc++.h>
-
 using namespace std;
 
 
-set<char> Alaem ; 
-class user 
+
+set<char> Alaem ; // creating a set 
+
+class user  // creating a class for user 
 {
 public : 
     void printuser()
@@ -24,7 +25,7 @@ public :
         id = i ; 
         pass = p ;
     }
-
+    
 private : 
     string id;
     string pass;
@@ -32,10 +33,10 @@ private :
         
 };
 
-class article 
+class article // creating a class for article  
 {
 public : 
-    article(string n , int d , int i , string f , int r)
+    article(string n , int d , int i , string f , int r) // constructor for article 
     {
         author = n ; 
         date = d ; 
@@ -43,12 +44,12 @@ public :
         filename = f ; 
         ref = r ;
     }
-    bool ValArtName()
+    bool ValArtName() // validate article name
     {
 
         return artname.size()<=12 ; 
     }  
-    bool ValArtlines()
+    bool ValArtlines() // validate article lines count 
     {
 
         string line ; 
@@ -62,7 +63,7 @@ public :
         }
         return lines >= 3 ; 
     }
-    bool ValArtWord()
+    bool ValArtWord() // validate article words count 
     {
         ifstream file ;
         file.open(filename.c_str()) ;
@@ -74,7 +75,7 @@ public :
         }
         return 5000 > Words and Words > 100; 
     }
-    bool LineCapCheck()
+    bool LineCapCheck() // validate if lines is stared with capital letter or not 
     {
         int lines ; 
         string line ;
@@ -86,7 +87,7 @@ public :
         }
         return true ; 
     }
-    bool ValCapSen()
+    bool ValCapSen() // validate if sentence is stared with capital letter or not 
     {
 
         string line ;
@@ -104,7 +105,7 @@ public :
         }        
         return true ;  
     }
-    bool ValAlaem() 
+    bool ValAlaem() // validate Punctuation marks 
     {
 
         ifstream file ;
@@ -130,7 +131,7 @@ public :
         return true ;  
 
     }
-    bool ValPar()
+    bool ValPar() // validate paragraph counts 
     {
  
         string line ;
@@ -149,7 +150,7 @@ public :
         if (depth > 0) return false ;
         return true ;  
     }
-    bool Wlimit() 
+    bool Wlimit() // validate if a word is counted more than 50 times or not 
     {
 
         map<string,int> WordCount ;
@@ -164,7 +165,7 @@ public :
         } 
     return true ;        
     }    
-    bool FinalEval()
+    bool FinalEval() // final evaluation 
     {
         return ValAlaem() and ValArtlines() and ValArtWord() and LineCapCheck() and ValCapSen() and ValAlaem() and ValPar() and Wlimit() ; 
     }
@@ -186,7 +187,7 @@ private :
 
 
 };
-int passcheck(string str)
+int passcheck(string str) // validate chosen password 
 { 
     int l_case=0, u_case=0, digit=0, special=0;
     int l=str.length(),i;
@@ -194,13 +195,13 @@ int passcheck(string str)
   for(i=0;i<l;i++)
   {
         if(islower(str[i]))
-        l_case=1;
+            l_case=1;
         if(isupper(str[i]))
-        u_case=1;
+            u_case=1;
         if(isdigit(str[i]))
-        digit=1;
+            digit=1;
         if(!isalpha(str[i]) && !isdigit(str[i]))
-        special=1;  
+            special=1;  
   }
   return(l_case + u_case + digit + special) ; 
 };
@@ -214,18 +215,19 @@ int passcheck(string str)
 
 
 int main()
-{
+{   
+    // inserting Punctuation marks to set 
     Alaem.insert('.') ; 
     Alaem.insert(',') ; 
     Alaem.insert('?') ; 
     Alaem.insert('!') ; 
-    cout<<"Menu \n register = 1 \n login = 2 \n" ; 
+    cout<<"Menu : \n register = 1 \n login = 2 \n" ; 
 
-    bool lf = 0 ; 
-    int CurrentUser = -1 ;
+    bool lf = 0 ; // checks if user is logged in or not 
+    int CurrentUser = -1 ; // saving current user index 
     string op ; 
-    vector<user> users ; 
-    vector<article> Articles ; 
+    vector<user> users ; // creating a list of users and they data 
+    vector<article> Articles ; // creating a list of articles and they data
     while (op != "exit") 
     {
         if (lf == 0) getline(cin >> ws  , op) ;
@@ -235,15 +237,15 @@ int main()
         if(CurrentUser == -1)
         {
             
-            if (op == "1")
+            if (op == "1")  // sign up 
             {
                 string un ; 
                 string up ; 
-                cout<<"username mad nazar khod ra vared konid : \n";
+                cout<<"please enter your desired username : \n";
                 getline(cin , un) ; 
-                cout<<"password khod ra entekhab konid : \n";
+                cout<<"please enter a strong password \n (your password should have at least one capital letter , one digit and one special character ) \n" ;
                 getline(cin , up) ; 
-                while (passcheck(up) <= 2)
+                while (passcheck(up) <= 2) // checks if user password is strong enough or not 
                 {
                     cout<<"weak password , try another one \n";
                     getline(cin , up) ; 
@@ -251,11 +253,11 @@ int main()
 
                 user newuser (un , up) ; 
                 cout<<"succsesfully Done ! \n register = 1 \n login = 2 \n" ;
-
-                users.push_back(newuser) ; 
+                users.push_back(newuser) ; // saving new user data 
                 
             }
-            if(op=="4")
+            /* 
+            if(op=="4") // test 
             {
              for(int i = 0 ; i < users.size() ; i++)
              {
@@ -263,8 +265,8 @@ int main()
                  cout<<users.size() ; 
              }
             }
-
-            if(op == "2")
+            */ 
+            if(op == "2") // login 
             {   
                 int userindex = -1 ; 
                 string un ;
@@ -273,7 +275,7 @@ int main()
                 getline(cin , un) ; 
 
                 
-                 for(int i = 0 ; i < users.size() ; i++)
+                 for(int i = 0 ; i < users.size() ; i++) // finding username among all users 
                  {
                      if(users[i].has_username(un))
                      {
@@ -281,20 +283,20 @@ int main()
                         break ; 
                      }
                  }
-                if(userindex != -1 )
+                if(userindex != -1 ) // check is chosen username is available or not 
                 {
                     lf = 0 ;
                     cout<<"password : " ; 
                     getline(cin , up) ; 
-                    if(users[userindex].has_password(up) == true) 
+                    if(users[userindex].has_password(up) == true) // checks if chosen password for chosen username is correct or not 
                     {
                         cout<<"login succsecful !\n " ; 
                         CurrentUser = userindex ; 
-                        cout<<"menu : \n ersal maghale = 1 \n rahgiri maghale = 2 \n logout = 3 \n " ;
+                        cout<<"menu : \n sumbit your article  = 1 \n evaluate your aricle  = 2 \n logout = 3 \n " ; // menu for logged in user 
                     }
-                    else 
+                    else  // if first input was wrong , get a new one 
                     {
-                        cout<<"invalid password for this username \n password : " ;  
+                        cout<<"invalid password for this username \n Try again : " ;    
                         int flag = 0 ; 
                         while (flag == 0)
                         {
@@ -318,6 +320,7 @@ int main()
                 
                 else 
                 {
+                    cout << " invalid username \n" ;   
                     lf = 1 ; 
                 }    
             }
@@ -325,46 +328,55 @@ int main()
             else 
             {
                 
-                if (op == "1")
+                if (op == "1") // submitting article 
                 {
-                    cout <<"esm maghale khod ra vared konid \n " ;
+                    cout <<"please enter your article name  \n " ; // article name 
                     string esm ;
                     cin>>esm ; 
-                    cout<<"shenase maghale ra vared konid\n" ; 
+                    cout<<"please enter a code for your article  \n" ; // article code 
                     int id ; 
                     cin>>id ;                         
-                    cout<<"sal maghale ra vared konid \n format : 2022\n" ; 
+                    cout<<"please enter the year of article \n format : 2022\n" ; // article year 
                     int date; 
                     cin>>date ; 
-                    cout<<"esm file khod ra vared konid\n" ; 
+                    cout<<"please enter your article's file name (Eg. :'test.txt')\n" ; // article file name 
                     string filename ; 
                     cin>>filename ;
-                    cout<<"refrence haye khod ra vared konid\n" ; 
+                    cout<<"please enter your Ref ID , enter 0 for none\n" ; // article ref id
                     int ref ; 
                     cin>>ref ; 
-                    article newarticle(esm , date , id ,filename , ref) ; 
+                    article newarticle(esm , date , id ,filename , ref) ; // creating a new article with given data 
                     Articles.push_back(newarticle) ; 
-                    cout<<"Maghale shoma sabt shod \n" ; 
+                    cout<<"your article has been submitted \n" ; 
+                    cout << "menu : \n sumbit your article  = 1 \n evaluate your aricle  = 2 \n logout = 3 \n " ; 
 
                 }
-                if (op =="2")
+                if (op =="2") // checks if your article has been verified or not 
                 {
-                    cout<<"shenase maghale khod ra vared konid\n" ; 
+                    cout<<"please enter your article code \n" ; 
                     int id ; 
                     cin>>id ; 
                     for (int i = 0 ; i < Articles.size() ; i++)
                     {
                         if(Articles[i].Has_id(id))
                         {
-                            if(Articles[i].FinalEval()) cout<<"Maghale shoma taiid shode ast\n" ; 
-                            else cout<<"Maghale shoma taiid nashode ast \n" ; 
+                            if(Articles[i].FinalEval()) 
+                            {
+                                cout<<"your artcile has been verified ! =) \n" ; 
+                                cout<<"menu : \n sumbit your article  = 1 \n evaluate your aricle  = 2 \n logout = 3 \n " ; 
+                            }
+                            else 
+                            {
+                                cout<<"your article has not been verified !  \n" ; 
+                                cout<<"menu : \n sumbit your article  = 1 \n evaluate your aricle  = 2 \n logout = 3 \n " ; 
+                            }
                         }
                     }
 
                 }
                 if(op =="3")
                 {
-                    CurrentUser = -1 ; 
+                    CurrentUser = -1 ; // back to normal menu 
                     cout<<"Menu \n register = 1 \n login = 2 \n" ; 
 
                 }
