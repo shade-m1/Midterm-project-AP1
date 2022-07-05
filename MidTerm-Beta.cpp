@@ -1,41 +1,52 @@
 #include <bits/stdc++.h>
 using namespace std;
-
+// ---- A Drunk Man Will Find His Way Home but a Drunk Bird May Get Lost Forever =) ---- //
+// ---- Well , let's See will Drunk Man Find His Way Home ? ---- // 
 
 
 set<char> Alaem ; // creating a set 
 
-class user  // creating a class for user 
-{
-public : 
-    void printuser()
-    {
-        cout<<id<<"\n"<<pass<<"\n" ; 
-    }
-    bool has_username(string un) 
-    {
-        return un == id ; 
-    }
-    bool has_password(string up) 
-    {
-        return up == pass ; 
-    }
-    user(string i , string p)
-    {
-        id = i ; 
-        pass = p ;
-    }
-    
-private : 
-    string id;
-    string pass;
 
-        
-};
 
 class article // creating a class for article  
 {
 public : 
+    int similaritty(article a) // calculating similaritty percentage 
+    {
+        if (filename == a.filename) return 0 ; // if they're same , return 0 
+        ifstream article1(filename) ; // opening both files 
+        ifstream article2(a.filename);
+        string word1 , word2 ; 
+        int same = 0 ;
+        int different = 0 ;
+        while (article1 >> word1 and article2 >> word2) // checking articles word by word 
+        {
+            if(word1 == word2)
+            {
+                same ++ ; 
+            }
+            else different ++ ;
+        }
+        while (article1 >> word1 or article2 >> word2) // counting all words 
+        {
+            different ++ ; 
+        }
+        article1.close() ; 
+        article2.close() ; 
+        return ((same * 100 )/(same + different)) ; // return percentage 
+    }
+    bool ValSimilaritty(vector<article> Articles) // Validate Similaritty
+    {
+        int ret = 1 ; 
+        for (int i = 0 ; i < Articles.size() ; i++)
+        {
+            if(similaritty(Articles[i]) > 50)
+            {
+                ret = 0 ;
+            }
+        }
+        return ret ;
+    }
     article(string n , int d , int i , string f , int r) // constructor for article 
     {
         author = n ; 
@@ -164,10 +175,13 @@ public :
             if(WordCount[Word] > 50 ) return false ; 
         } 
     return true ;        
-    }    
-    bool FinalEval() // final evaluation 
+    } 
+
+
+
+    bool FinalEval(vector<article> F) // final evaluation 
     {
-        return ValAlaem() and ValArtlines() and ValArtWord() and LineCapCheck() and ValCapSen() and ValAlaem() and ValPar() and Wlimit() ; 
+        return ValAlaem() and ValArtlines() and ValArtWord() and LineCapCheck() and ValCapSen() and ValAlaem() and ValPar() and Wlimit() and ValSimilaritty(F) ; 
     }
     bool Has_id(int i)
     {
@@ -185,6 +199,36 @@ private :
 
 
 
+
+};
+class user  // creating a class for user 
+{
+public : 
+    void printuser()
+    {
+        cout<<id<<"\n"<<pass<<"\n" ; 
+    }
+    bool has_username(string un) 
+    {
+        return un == id ; 
+    }
+    bool has_password(string up) 
+    {
+        return up == pass ; 
+    }
+    user(string i , string p)
+    {
+        id = i ; 
+        pass = p ;
+    }
+    void AddArticle(article a)
+    {
+        UserArticle.push_back(a) ; 
+    }
+private : 
+    string id;
+    string pass;
+    vector<article> UserArticle ; 
 
 };
 int passcheck(string str) // validate chosen password 
@@ -344,9 +388,31 @@ int main()
                     cin>>filename ;
                     cout<<"please enter your Ref ID , enter 0 for none\n" ; // article ref id
                     int ref ; 
-                    cin>>ref ; 
+                    cin>>ref ;
+                    cout<<"if you did your article with a collaborator please enter their username \n if none enter 0 \n"; // adding collaborator 
+                    string colab ; 
+                    cin>>colab; 
                     article newarticle(esm , date , id ,filename , ref) ; // creating a new article with given data 
-                    Articles.push_back(newarticle) ; 
+                    Articles.push_back(newarticle) ;    // adding article to all articles 
+                    users[CurrentUser].AddArticle(newarticle) ;  // adding article to user articles 
+                    if (colab != "0")
+                    {
+                        int colabindex = -1 ; 
+                        for(int i = 0 ; i < users.size() ; i++) // finding username among all users 
+                        {
+                            if(users[i].has_username(colab))
+                            {
+                                colabindex = i ; 
+                                break ; 
+                            }
+                        }
+                            if (colabindex == -1 ) cout<<"user not found \n" ; 
+                            else
+                            {
+                                users[colabindex].AddArticle(newarticle) ; // adding article to collaborator account 
+                                cout<<"Added for them ! \n" ; 
+                            } 
+                    }                 
                     cout<<"your article has been submitted \n" ; 
                     cout << "menu : \n sumbit your article  = 1 \n evaluate your aricle  = 2 \n logout = 3 \n " ; 
 
@@ -360,7 +426,7 @@ int main()
                     {
                         if(Articles[i].Has_id(id))
                         {
-                            if(Articles[i].FinalEval()) 
+                            if(Articles[i].FinalEval(Articles)) 
                             {
                                 cout<<"your artcile has been verified ! =) \n" ; 
                                 cout<<"menu : \n sumbit your article  = 1 \n evaluate your aricle  = 2 \n logout = 3 \n " ; 
@@ -388,3 +454,7 @@ int main()
     
     return 0 ;    
 }
+
+// Well Well , It Seems Our Drunk Man Found His Way Home =))))) 
+// Uh... , See Ya Soon Mate 
+// Good Luck  
